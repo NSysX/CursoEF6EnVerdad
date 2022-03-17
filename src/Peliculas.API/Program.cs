@@ -1,6 +1,10 @@
+using Peliculas.API;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Registro el contexto
+builder.Services.AgregaContexto(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
