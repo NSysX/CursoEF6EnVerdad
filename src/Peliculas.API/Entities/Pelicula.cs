@@ -7,5 +7,8 @@
         public bool EnCartelera { get; set; }
         public DateTime FechaEstreno { get; set; }
         public string PosterURL { get; set; }
+
+        public virtual List<Genero> Generos { get; set; }
+        public virtual List<SalaCine> SalaCines { get; set; }
     }
 }

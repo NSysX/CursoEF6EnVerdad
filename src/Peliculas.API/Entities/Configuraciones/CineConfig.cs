@@ -18,9 +18,6 @@ namespace Peliculas.API.Entities.Configuraciones
                 .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasComment("Nombre del Cine");
-
-            builder.Property(x => x.Precio)
-                .HasPrecision(9, 2);
         }
     }
 }

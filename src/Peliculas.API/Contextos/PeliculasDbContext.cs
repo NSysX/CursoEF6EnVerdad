@@ -12,7 +12,8 @@ namespace Peliculas.API.Contextos
         public DbSet<Actor> Actor { get; set; }
         public DbSet<Cine> Cine { get; set; }
         public DbSet<Pelicula> Pelicula { get; set; }
-
+        public DbSet<CineOferta> CineOferta { get; set; }
+        public DbSet<SalaCine> SalaCine { get; set; }
 
         // para configurar el api fluent
         protected override void OnModelCreating(ModelBuilder modelBuilder)
