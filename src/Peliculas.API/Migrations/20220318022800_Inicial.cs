@@ -141,6 +141,57 @@ namespace Peliculas.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PeliculaActor",
+                columns: table => new
+                {
+                    PeliculaId = table.Column<int>(type: "int", nullable: false),
+                    ActorId = table.Column<int>(type: "int", nullable: false),
+                    Personaje = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false, comment: "Nombre del personale"),
+                    Orden = table.Column<int>(type: "int", nullable: false, comment: "El orden de importancia del persionaje")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PeliculaActor", x => new { x.PeliculaId, x.ActorId });
+                    table.ForeignKey(
+                        name: "FK_PeliculaActor_Actor_ActorId",
+                        column: x => x.ActorId,
+                        principalTable: "Actor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PeliculaActor_Pelicula_PeliculaId",
+                        column: x => x.PeliculaId,
+                        principalTable: "Pelicula",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                },
+                comment: "Relacion entre las tablas Pelicula y Actor");
+
+            migrationBuilder.CreateTable(
+                name: "PeliculaSalaCine",
+                columns: table => new
+                {
+                    PeliculasId = table.Column<int>(type: "int", nullable: false),
+                    SalaCinesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PeliculaSalaCine", x => new { x.PeliculasId, x.SalaCinesId });
+                    table.ForeignKey(
+                        name: "FK_PeliculaSalaCine_Pelicula_PeliculasId",
+                        column: x => x.PeliculasId,
+                        principalTable: "Pelicula",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PeliculaSalaCine_SalaCine_SalaCinesId",
+                        column: x => x.SalaCinesId,
+                        principalTable: "SalaCine",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "Ix_ActorNomDup",
                 table: "Actor",
@@ -177,6 +228,16 @@ namespace Peliculas.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PeliculaActor_ActorId",
+                table: "PeliculaActor",
+                column: "ActorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PeliculaSalaCine_SalaCinesId",
+                table: "PeliculaSalaCine",
+                column: "SalaCinesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SalaCine_CineId",
                 table: "SalaCine",
                 column: "CineId");
@@ -191,22 +252,28 @@ namespace Peliculas.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Actor");
-
-            migrationBuilder.DropTable(
                 name: "CineOferta");
 
             migrationBuilder.DropTable(
                 name: "GeneroPelicula");
 
             migrationBuilder.DropTable(
-                name: "SalaCine");
+                name: "PeliculaActor");
+
+            migrationBuilder.DropTable(
+                name: "PeliculaSalaCine");
 
             migrationBuilder.DropTable(
                 name: "Genero");
 
             migrationBuilder.DropTable(
+                name: "Actor");
+
+            migrationBuilder.DropTable(
                 name: "Pelicula");
+
+            migrationBuilder.DropTable(
+                name: "SalaCine");
 
             migrationBuilder.DropTable(
                 name: "Cine");

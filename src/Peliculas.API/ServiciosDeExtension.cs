@@ -17,6 +17,8 @@ namespace Peliculas.API
                     r.MigrationsAssembly(typeof(PeliculasDbContext).Assembly.FullName);
                     r.UseNetTopologySuite();
                 });
+
+                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });      
         }
     }

@@ -10,5 +10,6 @@
 
         public virtual List<Genero> Generos { get; set; }
         public virtual List<SalaCine> SalaCines { get; set; }
+        public virtual List<PeliculaActor> PeliculaActors { get; set; }
     }
 }

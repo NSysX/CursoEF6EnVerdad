@@ -13,7 +13,7 @@ using Peliculas.API.Contextos;
 namespace Peliculas.API.Migrations
 {
     [DbContext(typeof(PeliculasDbContext))]
-    [Migration("20220318015325_Inicial")]
+    [Migration("20220318022800_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,6 +196,34 @@ namespace Peliculas.API.Migrations
                     b.HasComment("Catalogo de Peliculas");
                 });
 
+            modelBuilder.Entity("Peliculas.API.Entities.PeliculaActor", b =>
+                {
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int")
+                        .HasComment("El orden de importancia del persionaje");
+
+                    b.Property<string>("Personaje")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(150)")
+                        .HasComment("Nombre del personale");
+
+                    b.HasKey("PeliculaId", "ActorId");
+
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("PeliculaActor", (string)null);
+
+                    b.HasComment("Relacion entre las tablas Pelicula y Actor");
+                });
+
             modelBuilder.Entity("Peliculas.API.Entities.SalaCine", b =>
                 {
                     b.Property<int>("Id")
@@ -230,6 +258,21 @@ namespace Peliculas.API.Migrations
                     b.HasComment("Salas de cine");
                 });
 
+            modelBuilder.Entity("PeliculaSalaCine", b =>
+                {
+                    b.Property<int>("PeliculasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaCinesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PeliculasId", "SalaCinesId");
+
+                    b.HasIndex("SalaCinesId");
+
+                    b.ToTable("PeliculaSalaCine");
+                });
+
             modelBuilder.Entity("GeneroPelicula", b =>
                 {
                     b.HasOne("Peliculas.API.Entities.Genero", null)
@@ -254,6 +297,25 @@ namespace Peliculas.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Peliculas.API.Entities.PeliculaActor", b =>
+                {
+                    b.HasOne("Peliculas.API.Entities.Actor", "Actor")
+                        .WithMany("PeliculaActores")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Peliculas.API.Entities.Pelicula", "Pelicula")
+                        .WithMany("PeliculaActors")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Pelicula");
+                });
+
             modelBuilder.Entity("Peliculas.API.Entities.SalaCine", b =>
                 {
                     b.HasOne("Peliculas.API.Entities.Cine", "Cine")
@@ -265,11 +327,36 @@ namespace Peliculas.API.Migrations
                     b.Navigation("Cine");
                 });
 
+            modelBuilder.Entity("PeliculaSalaCine", b =>
+                {
+                    b.HasOne("Peliculas.API.Entities.Pelicula", null)
+                        .WithMany()
+                        .HasForeignKey("PeliculasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Peliculas.API.Entities.SalaCine", null)
+                        .WithMany()
+                        .HasForeignKey("SalaCinesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Peliculas.API.Entities.Actor", b =>
+                {
+                    b.Navigation("PeliculaActores");
+                });
+
             modelBuilder.Entity("Peliculas.API.Entities.Cine", b =>
                 {
                     b.Navigation("CineOferta");
 
                     b.Navigation("SalaCines");
+                });
+
+            modelBuilder.Entity("Peliculas.API.Entities.Pelicula", b =>
+                {
+                    b.Navigation("PeliculaActors");
                 });
 #pragma warning restore 612, 618
         }
